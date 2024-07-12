@@ -4,18 +4,24 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 export async function createPost(formdata: FormData) {
-  await prisma.post.create({
-    data: {
-      title: formdata.get("title") as string,
-      content: formdata.get("content") as string,
-      slug: (formdata.get("title") as string).replace(/\s/g, "-").toLowerCase(),
-      User: {
-        connect: {
-          email: "biswa@biswa.com",
+  try {
+    await prisma.post.create({
+      data: {
+        title: formdata.get("title") as string,
+        content: formdata.get("content") as string,
+        slug: (formdata.get("title") as string)
+          .replace(/\s/g, "-")
+          .toLowerCase(),
+        User: {
+          connect: {
+            email: "biswa@biswa.com",
+          },
         },
       },
-    },
-  });
+    });
+  } catch (error) {
+    console.log(error);
+  }
 
   revalidatePath("/posts");
 }
