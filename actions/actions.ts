@@ -19,8 +19,8 @@ export async function createPost(formdata: FormData) {
         },
       },
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error("Failed to create post ", error);
   }
 
   revalidatePath("/posts");
